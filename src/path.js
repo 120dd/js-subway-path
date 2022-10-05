@@ -1,20 +1,35 @@
 import Dijkstra from "./utils/Dijkstra.js";
 import data from "./data.js";
+import { constants } from "./constants.js";
 
 export default class {
     constructor() {
-        this.dijkstra = new Dijkstra();
-        this.#initData();
+        this.dijkstraDistance = new Dijkstra();
+        this.dijkstraTime = new Dijkstra();
+        this.#initDistanceData();
+        this.#initTimeData();
     }
     
-    #initData() {
+    #initDistanceData() {
         data.forEach(v => {
-            this.dijkstra.addEdge(v.from, v.to, v.distance);
+            this.dijkstraDistance.addEdge(v.from, v.to, v.distance);
+        });
+    }
+    
+    #initTimeData() {
+        data.forEach(v => {
+            this.dijkstraTime.addEdge(v.from, v.to, v.minute);
         });
     }
     
     getPathData(from, to, searchType) {
-        const resultArr = this.dijkstra.findShortestPath(from, to);
+        let resultArr;
+        if (searchType === constants.DISTANCE_TYPE) {
+            resultArr = this.dijkstraDistance.findShortestPath(from, to);
+        }
+        if (searchType === constants.TIME_TYPE) {
+            resultArr = this.dijkstraTime.findShortestPath(from, to);
+        }
         const pathDistance = this.getPathDistance(resultArr);
         const pathMinute = this.getPathTime(resultArr);
         return {
