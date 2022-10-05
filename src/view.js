@@ -39,4 +39,8 @@ export default class {
             callback(from, to, searchType)
         })
     }
+    
+    alert(contents) {
+        alert(contents);
+    }
 }
